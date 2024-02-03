@@ -17,6 +17,18 @@ const initialStateThree = {
   errorMessage: "",
 };
 
+const initialStateReportOne = {
+  isLoading: false,
+  oneReportList: [],
+  errorMessage: "",
+};
+
+const initialStateReportTwo = {
+  isLoading: false,
+  twoReportList: [],
+  errorMessage: "",
+};
+
 const CaseOneReducer = (state = initialStateOne, action) => {
   switch (action.type) {
     case "GET_CASE_ONE":
@@ -65,4 +77,36 @@ const CaseThreeReducer = (state = initialStateThree, action) => {
   }
 };
 
-export { CaseOneReducer, CaseTwoReducer, CaseThreeReducer };
+const ReportOneReducer = (state = initialStateReportOne, action) => {
+  switch (action.type) {
+    case "GET_REPORT_ONE":
+      return { ...state, isLoading: true };
+
+    case "GET_REPORT_ONE_SUCC":
+      return { ...state, isLoading: true, oneReportList: action.payload };
+
+    case "GET_REPORT_ONE_FAIL":
+      return { ...state, isLoading: false, oneReportList: [], errorMessage: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+const ReportTwoReducer = (state = initialStateReportTwo, action) => {
+  switch (action.type) {
+    case "GET_REPORT_TWO":
+      return { ...state, isLoading: true };
+
+    case "GET_REPORT_TWO_SUCC":
+      return { ...state, isLoading: true, twoReportList: action.payload };
+
+    case "GET_REPORT_TWO_FAIL":
+      return { ...state, isLoading: false, twoReportList: [], errorMessage: action.payload };
+
+    default:
+      return state;
+  }
+};
+
+export { CaseOneReducer, CaseTwoReducer, CaseThreeReducer, ReportOneReducer, ReportTwoReducer };

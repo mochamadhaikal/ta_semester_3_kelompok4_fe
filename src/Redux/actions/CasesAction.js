@@ -76,3 +76,53 @@ export const GetCaseThree = () => {
     }, 1000);
   };
 };
+
+export const GetReportOne = () => {
+  return (dispatch) => {
+    dispatch({
+      type: "GET_REPORT_ONE",
+    });
+    setTimeout(() => {
+      axios
+        .get(`${URL}/cases/r1`)
+        .then((res) => {
+          const _list = res.data;
+          dispatch({
+            type: "GET_REPORT_ONE_SUCC",
+            payload: _list,
+          });
+        })
+        .catch((err) => {
+          dispatch({
+            type: "GET_REPORT_ONE_FAIL",
+            payload: err,
+          });
+        });
+    }, 1000);
+  };
+};
+
+export const GetReportTwo = () => {
+  return (dispatch) => {
+    dispatch({
+      type: "GET_REPORT_TWO",
+    });
+    setTimeout(() => {
+      axios
+        .get(`${URL}/cases/r2`)
+        .then((res) => {
+          const _list = res.data;
+          dispatch({
+            type: "GET_REPORT_TWO_SUCC",
+            payload: _list,
+          });
+        })
+        .catch((err) => {
+          dispatch({
+            type: "GET_REPORT_TWO_FAIL",
+            payload: err,
+          });
+        });
+    }, 1000);
+  };
+};

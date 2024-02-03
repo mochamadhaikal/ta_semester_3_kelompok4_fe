@@ -11,12 +11,14 @@ import {
   TableHead,
   TableRow,
   Paper,
+  Grid,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { makeStyles } from "@mui/styles"; // Atau '@material-ui/core/styles' untuk versi sebelumnya
 import { connect } from "react-redux";
-import { GetCaseOne, GetCaseThree, GetCaseTwo } from "../Redux/actions/CasesAction";
+import { GetCaseOne, GetCaseThree, GetCaseTwo, GetReportOne, GetReportTwo } from "../Redux/actions/CasesAction";
 import moment from "moment";
+import { Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, Tooltip, XAxis, YAxis } from "recharts";
 
 // Membuat custom styles
 const useStyles = makeStyles((theme) => ({
@@ -31,17 +33,6 @@ const useStyles = makeStyles((theme) => ({
     height: "80vh", // Sesuaikan dengan kebutuhan
   },
 }));
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
 
 const columns1 = [
   { id: "title", name: "Title" },
@@ -54,13 +45,36 @@ const columns2 = [
 ];
 
 const columns3 = [{ id: "last_borrowed", name: "Last Borrowed" }];
+const columns1r = [
+  { id: "total", name: "Total" },
+  { id: "jumlah", name: "Jumlah" },
+];
+
+const columns2r = [
+  { id: "jumlah1", name: "Jumlah Pinjaman Januari" },
+  { id: "jumlah2", name: "Jumlah Pinjaman Februari" },
+  { id: "jumlah3", name: "Jumlah Pinjaman Maret" },
+];
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
+
+const data = [
+  { name: "Action", value: 400 },
+  { name: "Romance", value: 300 },
+  { name: "Science Fiction", value: 300 },
+  { name: "Horror", value: 200 },
+];
 
 function Case(props) {
+  const dataOne = props.reportOneState.oneReportList;
+  const dataTwo = props.reportTwoState.twoReportList;
   const classes = useStyles();
   useEffect(() => {
     props.loadCase1();
     props.loadCase2();
     props.loadCase3();
+    props.loadReport1();
+    props.loadReport2();
   }, []);
   return (
     <div className={classes.backgroundImage}>
@@ -160,6 +174,109 @@ function Case(props) {
             </TableContainer>
           </AccordionDetails>
         </Accordion>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <h2>Total</h2>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow style={{ backgroundColor: "midnightblue" }}>
+                      {columns1r.map((column) => (
+                        <TableCell key={column.id} style={{ color: "white" }}>
+                          {column.name}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {dataOne.map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{row.name}</TableCell>
+                        <TableCell>{row.value}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <h2>Jumlah Pinjaman Perbulan</h2>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow style={{ backgroundColor: "midnightblue" }}>
+                      {columns2r.map((column) => (
+                        <TableCell key={column.id} style={{ color: "white" }}>
+                          {column.name}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {dataTwo.map((row, index) => (
+                      <TableRow key={index}>
+                        <TableCell>{row.jumlah_pinjaman_januari}</TableCell>
+                        <TableCell>{row.jumlah_pinjaman_februari}</TableCell>
+                        <TableCell>{row.jumlah_pinjaman_maret}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Grid>
+        </Grid>
+        {/* <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <h2>Total</h2>
+              <PieChart width={400} height={400}>
+                <Pie
+                  data={dataOne}
+                  cx={200}
+                  cy={200}
+                  labelLine={false}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({ name, value }) => `${name} ${(value * 100).toFixed(0)}%`}
+                >
+                  {dataOne.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <h2>Grafik Perbulan</h2>
+              <BarChart
+                width={500}
+                height={300}
+                data={data}
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="borrowings" fill="#8884d8" />
+              </BarChart>
+            </Paper>
+          </Grid>
+        </Grid> */}
       </Paper>
     </div>
   );
@@ -170,6 +287,8 @@ const mapStateToProps = (state) => {
     caseOneState: state.caseOne,
     caseTwoState: state.caseTwo,
     caseThreeState: state.caseThree,
+    reportOneState: state.reportOne,
+    reportTwoState: state.reportTwo,
   };
 };
 
@@ -178,6 +297,8 @@ const mapDispatchToProps = (dispatch) => {
     loadCase1: () => dispatch(GetCaseOne()),
     loadCase2: () => dispatch(GetCaseTwo()),
     loadCase3: () => dispatch(GetCaseThree()),
+    loadReport1: () => dispatch(GetReportOne()),
+    loadReport2: () => dispatch(GetReportTwo()),
   };
 };
 
