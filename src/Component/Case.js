@@ -59,10 +59,21 @@ const columns2r = [
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF"];
 
 const data = [
-  { name: "Action", value: 400 },
-  { name: "Romance", value: 300 },
-  { name: "Science Fiction", value: 300 },
-  { name: "Horror", value: 200 },
+  { name: "Januari", value: 30 },
+  { name: "Februai", value: 40 },
+  { name: "Maret", value: 10 },
+  { name: "April", value: 20 },
+];
+
+const data2 = [
+  { name: "Die Another Day", dipinjam: 4 },
+  { name: "Inception", dipinjam: 3 },
+  { name: "Avatar", dipinjam: 1 },
+];
+const data3 = [
+  { name: "Andi", meminjam: 3 },
+  { name: "Budi", meminjam: 2 },
+  { name: "Citra", meminjam: 5 },
 ];
 
 function Case(props) {
@@ -229,22 +240,50 @@ function Case(props) {
             </Paper>
           </Grid>
         </Grid>
-        {/* <Grid container spacing={3}>
+        <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
             <Paper elevation={3} sx={{ p: 2 }}>
-              <h2>Total</h2>
+              <h2>DVD Paling Sering Dipinjam</h2>
+              <BarChart width={400} height={200} data={data2}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="dipinjam" fill="#8884d8" />
+                {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
+              </BarChart>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <h2>Peminjam Paling Sering</h2>
+              <BarChart width={400} height={200} data={data3}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="meminjam" fill="#8884d8" />
+                {/* <Bar dataKey="uv" fill="#82ca9d" /> */}
+              </BarChart>
+            </Paper>
+          </Grid>
+        </Grid>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Paper elevation={3} sx={{ p: 2 }}>
+              <h2>Laporan Peminjam Per bulan</h2>
               <PieChart width={400} height={400}>
                 <Pie
-                  data={dataOne}
+                  data={data}
                   cx={200}
                   cy={200}
                   labelLine={false}
                   outerRadius={80}
                   fill="#8884d8"
                   dataKey="value"
-                  label={({ name, value }) => `${name} ${(value * 100).toFixed(0)}%`}
+                  label={({ name, value }) => `${name} ${value.toFixed(0)}%`}
                 >
-                  {dataOne.map((entry, index) => (
+                  {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
@@ -253,30 +292,7 @@ function Case(props) {
               </PieChart>
             </Paper>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper elevation={3} sx={{ p: 2 }}>
-              <h2>Grafik Perbulan</h2>
-              <BarChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                  top: 20,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="borrowings" fill="#8884d8" />
-              </BarChart>
-            </Paper>
-          </Grid>
-        </Grid> */}
+        </Grid>
       </Paper>
     </div>
   );

@@ -42,7 +42,7 @@ const Dvd = (props) => {
 
   // Column definition for table
   const columns = [
-    { id: "dvdId", name: "Id" },
+    { id: "dvdId", name: "No. Dvd" },
     { id: "title", name: "Title" },
     { id: "actorName", name: "Actor Name" },
     { id: "action", name: "Action" },
